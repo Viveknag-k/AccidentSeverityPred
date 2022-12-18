@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import pickle
-model = pickle.load(open("rf.pkl","rb"))
+model = pickle.load(open("r.pkl","rb"))
 st.header("Road Accidents Severity Classification")
 st.write("Give the input features : ")
 def ip_features():
@@ -34,14 +34,10 @@ def ip_features():
 df = ip_features()
 
 def main():
-    from sklearn.preprocessing import LabelEncoder
-    l = LabelEncoder()
-    for col in df.columns:
-        if df[col].dtype == object:
-            df[col] = l.fit_transform(df[col])
+    ipFeatures = [float(x) for x in df]
+    fin_features = [np.array(ipFeatures)]
     if st.button('Predict'):
-        pred = model.predict(df)
-        #if st.success("The person got {}:".format(pred))
+        pred = model.predict(fin_features)
         if pred == 1:
             st.success("The person got Slight Injury")
         elif pred == 2:
@@ -50,6 +46,4 @@ def main():
             st.success("The person got Fatal Injury")
                 
 if __name__ == '__main__':
-    main()
-
-   
+    main()   
